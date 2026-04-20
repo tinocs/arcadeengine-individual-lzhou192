@@ -100,10 +100,9 @@ public abstract class World extends Pane{
 		List<A> list = new ArrayList<>();
 		for(int i = 0; i < getChildren().size(); i++) {
 			Node n = getChildren().get(i);
-			A a = (A) n; 
-			
-			if(cls.isInstance(a)) {
-				list.add(a);
+			if (cls.isInstance(n)) {
+			    A a = cls.cast(n);
+			    list.add(a);
 			}
 		}
 		
@@ -115,10 +114,11 @@ public abstract class World extends Pane{
 		List<A> list = new ArrayList<>();
 		for(int i = 0; i < getChildren().size(); i++) {
 			Node n = getChildren().get(i);
-			A a = (A) n; 
-			
-			if(cls.isInstance(a) && a.contains(x, y)) {
-				list.add(a);
+			if (cls.isInstance(n)) {
+			    A a = cls.cast(n);
+			    if (a.getBoundsInParent().contains(x, y)) {
+			        list.add(a);
+			    }
 			}
 		}
 		
@@ -132,10 +132,12 @@ public abstract class World extends Pane{
 	
 	public void start() {
 		timer.start(); 
+		timerRunning = true;
 	}
 	
 	public void stop() {
-		timer.stop();
+	    timer.stop();
+	    timerRunning = false;
 	}
 	
 	public boolean isStopped() {

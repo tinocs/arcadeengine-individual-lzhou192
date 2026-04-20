@@ -14,7 +14,11 @@ public abstract class Actor extends ImageView{
 	}
 	
 	public World getWorld() {
-		return (World) getParent(); 
+		if (getParent() instanceof World) {
+		    return (World) getParent();
+		} else {
+		    return null;
+		}
 	}
 	
 	public double getWidth() {
@@ -27,7 +31,12 @@ public abstract class Actor extends ImageView{
 	
 	public <A extends Actor> java.util.List<A> getIntersectingObjects(java.lang.Class<A> cls){
 		List<A> results = new ArrayList<>();
-		List<A> actors = getWorld().getObjects(cls); 
+		World world = getWorld();
+		if (world == null) {
+		    return results;
+		}
+
+		List<A> actors = world.getObjects(cls);
 		for(int i = 0; i < actors.size(); i++) {
 			if(actors.get(i) != this && getBoundsInParent().intersects(actors.get(i).getBoundsInParent())) {
 				results.add(actors.get(i));
@@ -38,7 +47,7 @@ public abstract class Actor extends ImageView{
 	}
 	
 	public <A extends Actor> A getOneIntersectingObject(java.lang.Class<A> cls) {
-		List<A> actors = (List<A>) getIntersectingObjects(Actor.class); 
+		List<A> actors = getIntersectingObjects(cls);
 		return actors.size() == 0 ? null : actors.get(0); 
 	}
 	
