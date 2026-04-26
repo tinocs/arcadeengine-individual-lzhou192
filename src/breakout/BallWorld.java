@@ -40,10 +40,23 @@ public class BallWorld extends World{
         
         add(paddle);
         
+        Brick brick = new Brick(); 
+        brick.setX(centerX/2);
+        brick.setY(centerY*3/4);
+        
+        add(brick);
+        
+        Brick brick2 = new Brick(); 
+        brick2.setX(centerX*3/4);
+        brick2.setY(centerY*3/4);
+        
+        add(brick2);
+        
 	}
 	
 	public Score getScore() {
 	    return score;
 	}
+	
 
 }

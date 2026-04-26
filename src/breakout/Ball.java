@@ -23,6 +23,8 @@ public class Ball extends Actor{
 		
 		World world = getWorld();
 	    if (world == null) return;
+	    
+	    BallWorld bworld = (BallWorld) world;
 		
 		if (getX() <= 0 || getX()+getWidth() >= world.getWidth()) {
 	        dx *= -1;
@@ -49,6 +51,14 @@ public class Ball extends Actor{
 	    	}
 	    	
 	    	getWorld().remove(brick);
+	    	
+	    	Score s = bworld.getScore(); 
+	    	s.setValue(s.getValue() + 1000); 
+	    }
+	   
+	    if (getY() >= bworld.getHeight()-getHeight()) {
+	    	Score s = bworld.getScore(); 
+	    	s.setValue(s.getValue() - 1000); 
 	    }
 	}
 
