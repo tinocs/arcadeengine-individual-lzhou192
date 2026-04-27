@@ -13,8 +13,8 @@ public class Ball extends Actor{
 		String path = getClass().getClassLoader().getResource("breakoutresources/Ball.png").toString();
 		Image img = new Image(path);
 		this.setImage(img);
-		dx = 5;
-		dy = 5;
+		dx = 2;
+		dy = 2;
 	}
 
 	@Override
@@ -53,10 +53,10 @@ public class Ball extends Actor{
 	    	getWorld().remove(brick);
 	    	
 	    	Score s = bworld.getScore(); 
-	    	s.setValue(s.getValue() + 1000); 
+	    	s.setValue(s.getValue() + 100); 
 	    }
 	   
-	    if (getY() >= bworld.getHeight()-getHeight()) {
+	    if (getY() > bworld.getHeight()-getHeight()) {
 	    	Score s = bworld.getScore(); 
 	    	s.setValue(s.getValue() - 1000); 
 	    }

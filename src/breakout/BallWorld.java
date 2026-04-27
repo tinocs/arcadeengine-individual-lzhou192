@@ -1,9 +1,13 @@
 package breakout;
 
+import java.util.Scanner;
+
 import engine.World;
+import javafx.scene.Node;
 
 public class BallWorld extends World{
 	
+	private int level = 1;
 	private Score score;
 	
 	public BallWorld() {
@@ -12,8 +16,19 @@ public class BallWorld extends World{
 
 	@Override
 	public void act(long now) {
-		// TODO Auto-generated method stub
+		if (score.getValue() < 0) {
+			Breakout.showTitle();
+			score.setValue(0);
+		}
 		
+		boolean noBricksLeft = true;
+
+		for (Node node : getChildren()) {
+		    if (node instanceof Brick) {
+		        noBricksLeft = false;
+		        break;
+		    }
+		}
 	}
 
 	@Override
@@ -36,21 +51,10 @@ public class BallWorld extends World{
 		
         Paddle paddle = new Paddle(); 
         paddle.setX(centerX);
-        paddle.setY(centerY/2);
+        paddle.setY(centerY*3/2);
         
         add(paddle);
-        
-        Brick brick = new Brick(); 
-        brick.setX(centerX/2);
-        brick.setY(centerY*3/4);
-        
-        add(brick);
-        
-        Brick brick2 = new Brick(); 
-        brick2.setX(centerX*3/4);
-        brick2.setY(centerY*3/4);
-        
-        add(brick2);
+       
         
 	}
 	
@@ -58,5 +62,46 @@ public class BallWorld extends World{
 	    return score;
 	}
 	
+	public void loadLevel(int levelNum) {
+
+	    String filename = "/breakoutresources/level" + levelNum + ".txt";
+
+	    try {
+	    	
+	    	Scanner s = new Scanner(getClass().getResourceAsStream(filename));;
+	        int rows = s.nextInt();
+	        int cols = s.nextInt();
+	        s.nextLine();
+
+	        double brickWidth = 600.0/cols;
+	        double brickHeight = 20;
+
+	        for (int r = 0; r < rows; r++) {
+	            String line = s.nextLine();
+
+	            for (int c = 0; c < cols; c++) {
+	                int type = Character.getNumericValue(line.charAt(c));
+
+	                if (type != 0) {
+	                    Brick brick = new Brick();
+	                    brick.setColor(type);
+	                    brick.setX(c * brickWidth + 30);
+	                    brick.setY(r * brickHeight + 50);
+
+	                    add(brick);
+	                }
+	            }
+	        }
+	        
+	        s.close();
+
+	    } catch (Exception e) {
+	        System.out.println(e.getMessage());
+	    }
+	}
+	
+	public int getLevel() {
+		return level; 
+	}
 
 }
