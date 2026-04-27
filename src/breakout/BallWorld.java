@@ -2,6 +2,7 @@ package breakout;
 
 import java.util.Scanner;
 
+import engine.Sound;
 import engine.World;
 import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
@@ -23,13 +24,18 @@ public class BallWorld extends World{
 	private boolean isPaused = true; 
 	private Paddle paddle; 
 	
+	private Sound loseLifeSound = new Sound("/breakoutresources/lose_life.wav");
+	private Sound gameLostSound = new Sound("/breakoutresources/game_lost.wav");
+	private Sound gameWonSound = new Sound("/breakoutresources/game_won.wav");
+	
 	public BallWorld() {
 		setPrefSize(600, 400);
 	}
 
 	@Override
 	public void act(long now) {
-		if (ball.getY() > getHeight()-ball.getHeight()) { 
+		
+		if (ball != null && ball.getY() > getHeight()-ball.getHeight()) { 
 
 		    lives--;
 		    livesText.setText("Lives: " + lives);

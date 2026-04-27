@@ -1,14 +1,19 @@
 package breakout;
 
 import engine.Actor;
+import engine.Sound;
 import engine.World;
 import javafx.scene.image.Image;
 import javafx.scene.image.ImageView;
 
 public class Ball extends Actor{
 	
+	private Sound bounceSound = new Sound("/breakoutresources/ball_bounce.wav");
+	private Sound brickSound = new Sound("/breakoutresources/brick_hit.wav");
+	
 	double dx;
 	double dy; 
+	
 	public Ball() {
 		String path = getClass().getClassLoader().getResource("breakoutresources/Ball.png").toString();
 		Image img = new Image(path);
@@ -28,14 +33,17 @@ public class Ball extends Actor{
 		
 		if (getX() <= 0 || getX()+getWidth() >= world.getWidth()) {
 	        dx *= -1;
+	        bounceSound.play();
 	    }
 
 	    if (getY() <= 0 || getY()+getHeight() >= world.getHeight()) {
 	        dy *= -1;
+	        bounceSound.play();
 	    }
 		
 	    if (getOneIntersectingObject(Paddle.class) != null) {
 	    	dy *= -1; 
+	    	bounceSound.play();
 	    }
 	    
 	    if (getOneIntersectingObject(Brick.class) != null) {
@@ -60,6 +68,8 @@ public class Ball extends Actor{
 	    	    setY(bworld.getPaddle().getY() - 15);
 	    	    return;
 	    	}
+	    	
+	    	brickSound.play();
 	    }
 	   
 	    if (getY() > bworld.getHeight()-getHeight()) {
