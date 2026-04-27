@@ -3,12 +3,21 @@ package breakout;
 import java.util.Scanner;
 
 import engine.World;
+import javafx.animation.PauseTransition;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.text.Font;
+import javafx.scene.text.Text;
+import javafx.util.Duration;
 
 public class BallWorld extends World{
 	
 	private int level = 1;
 	private Score score;
+	private int lives = 3;
+	private Text livesText;
+	private Ball ball; 
 	
 	public BallWorld() {
 		setPrefSize(600, 400);
@@ -16,9 +25,19 @@ public class BallWorld extends World{
 
 	@Override
 	public void act(long now) {
-		if (score.getValue() < 0) {
-			Breakout.showTitle();
-			score.setValue(0);
+		if (ball.getY() > getHeight()-ball.getHeight()) { 
+
+		    lives--;
+		    livesText.setText("Lives: " + lives);
+
+		    if (lives <= 0) {
+		    	Breakout.showTitle(); 
+		    } else {
+		    	double centerX = getWidth()/2 - ball.getImage().getWidth()/2;
+		        double centerY = getHeight()/2 - ball.getImage().getHeight()/2;
+		        ball.setX(centerX);
+		        ball.setY(centerY); 
+		    }
 		}
 		
 		boolean noBricksLeft = true;
@@ -30,10 +49,10 @@ public class BallWorld extends World{
 		    }
 		}
 	}
-
+	
 	@Override
 	public void onDimensionsInitialized() {
-		Ball ball = new Ball();
+		ball = new Ball();
 		
 		score = new Score();
 		
@@ -55,7 +74,12 @@ public class BallWorld extends World{
         
         add(paddle);
        
-        
+        livesText = new Text("Lives: " + lives);
+        livesText.setFont(new Font(24));
+        livesText.setX(getWidth()/2);
+        livesText.setY(20);
+
+        getChildren().add(livesText);
 	}
 	
 	public Score getScore() {
