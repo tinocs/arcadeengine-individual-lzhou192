@@ -54,12 +54,26 @@ public class Ball extends Actor{
 	    	
 	    	Score s = bworld.getScore(); 
 	    	s.setValue(s.getValue() + 100); 
+	    	
+	    	if (bworld.isPaused()) {
+	    	    setX(bworld.getPaddle().getX() + bworld.getPaddle().getWidth() / 2);
+	    	    setY(bworld.getPaddle().getY() - 15);
+	    	    return;
+	    	}
 	    }
 	   
 	    if (getY() > bworld.getHeight()-getHeight()) {
 	    	Score s = bworld.getScore(); 
 	    	s.setValue(s.getValue() - 1000); 
 	    }
+	}
+	
+	public void setDX(double x) {
+		dx = x; 
+	}	
+	
+	public void setDY(double y) {
+		dy = y; 
 	}
 
 }

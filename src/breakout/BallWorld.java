@@ -7,6 +7,8 @@ import javafx.animation.PauseTransition;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
 import javafx.scene.Node;
+import javafx.scene.input.KeyCode;
+import javafx.scene.input.KeyEvent;
 import javafx.scene.text.Font;
 import javafx.scene.text.Text;
 import javafx.util.Duration;
@@ -18,6 +20,8 @@ public class BallWorld extends World{
 	private int lives = 3;
 	private Text livesText;
 	private Ball ball; 
+	private boolean isPaused = true; 
+	private Paddle paddle; 
 	
 	public BallWorld() {
 		setPrefSize(600, 400);
@@ -33,10 +37,7 @@ public class BallWorld extends World{
 		    if (lives <= 0) {
 		    	Breakout.showTitle(); 
 		    } else {
-		    	double centerX = getWidth()/2 - ball.getImage().getWidth()/2;
-		        double centerY = getHeight()/2 - ball.getImage().getHeight()/2;
-		        ball.setX(centerX);
-		        ball.setY(centerY); 
+		    	resetBall();
 		    }
 		}
 		
@@ -65,10 +66,12 @@ public class BallWorld extends World{
         double centerY = getHeight()/2 - ball.getImage().getHeight()/2;
         ball.setX(centerX);
         ball.setY(centerY);
+        ball.setDX(0);
+        ball.setDY(0);
 
         add(ball);
 		
-        Paddle paddle = new Paddle(); 
+        paddle = new Paddle(); 
         paddle.setX(centerX);
         paddle.setY(centerY*3/2);
         
@@ -80,6 +83,18 @@ public class BallWorld extends World{
         livesText.setY(20);
 
         getChildren().add(livesText);
+        
+        setOnKeyPressed(new EventHandler<KeyEvent>() {
+            @Override
+            public void handle(KeyEvent e) {
+            	if (e.getCode() == KeyCode.SPACE && isPaused) {
+            		ball.setDX(2);
+            		ball.setDY(2);
+                    isPaused = false;
+                }
+            }
+        });
+        
 	}
 	
 	public Score getScore() {
@@ -124,8 +139,30 @@ public class BallWorld extends World{
 	    }
 	}
 	
+	public void resetBall() {
+	    isPaused = true;
+
+	    ball.setDX(0);
+	    ball.setDY(0);
+	    double centerX = getWidth()/2 - ball.getImage().getWidth()/2;
+        double centerY = getHeight()/2 - ball.getImage().getHeight()/2;
+        ball.setX(centerX);
+        ball.setY(centerY);
+	}
+	
 	public int getLevel() {
 		return level; 
 	}
 
+	public boolean isPaused() {
+	    return isPaused;
+	}
+
+	public void setPaused(boolean paused) {
+	    isPaused = paused;
+	}
+	
+	public Paddle getPaddle() {
+		return paddle;
+	}
 }
