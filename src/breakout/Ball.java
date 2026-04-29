@@ -8,8 +8,8 @@ import javafx.scene.image.ImageView;
 
 public class Ball extends Actor{
 	
-	private Sound bounceSound = new Sound("/breakoutresources/ball_bounce.wav");
-	private Sound brickSound = new Sound("/breakoutresources/brick_hit.wav");
+	private Sound bounceSound = new Sound("breakoutresources/ball_bounce.wav");
+	private Sound brickSound = new Sound("breakoutresources/brick_hit.wav");
 	
 	double dx;
 	double dy; 
@@ -36,7 +36,7 @@ public class Ball extends Actor{
 	        bounceSound.play();
 	    }
 
-	    if (getY() <= 0 || getY()+getHeight() >= world.getHeight()) {
+	    if (getY() <= 35 || getY()+getHeight() >= world.getHeight()) {
 	        dy *= -1;
 	        bounceSound.play();
 	    }
@@ -72,7 +72,7 @@ public class Ball extends Actor{
 	    	brickSound.play();
 	    }
 	   
-	    if (getY() > bworld.getHeight()-getHeight()) {
+	    if (getY() >= bworld.getHeight()-getHeight()) {
 	    	Score s = bworld.getScore(); 
 	    	s.setValue(s.getValue() - 1000); 
 	    }
